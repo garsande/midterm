@@ -7,7 +7,6 @@ class Operations:
         Starting with the basic Operation class which encapsulates basic arithmetic operations as static methods.
         Eventually planning to change this class to use Factory pattern to create operations. them to 
         
-
     """
 
     @staticmethod  

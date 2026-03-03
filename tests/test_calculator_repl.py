@@ -8,6 +8,16 @@ from tempfile import TemporaryDirectory
 from app.calculator_repl import calculator_repl
 from app.operations import Operations
 
+@patch('builtins.input', side_effect=['help','exit'])
+@patch('builtins.print')
+def test_calculator_repl_help_exit(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("\nAvailable commands:")
+    mock_print.assert_any_call(" add, subtract, multiply, divide, power, root, abs_diff, int_divide, "
+                    "modulus, percentage - Perform calculations")
+    mock_print.assert_any_call("  exit - Exit the calculator")
+    mock_print.assert_any_call("Goodbye!")
+
 
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
 @patch('builtins.print')
@@ -81,4 +91,12 @@ def test_calculator_repl_absolute_difference(mock_print, mock_input):
 def test_calculator_repl_percentage(mock_print, mock_input):
     calculator_repl()
     mock_print.assert_any_call("\nResult: 30.0")
+
+
+@patch('builtins.input', side_effect=['divide', '6', '0'])
+@patch('builtins.print')
+def calculator_repl_division(mock_print, mock_input):
+    with pytest.raises(ZeroDivisionError) as exc_info:
+           calculator_repl()
+    assert str(exc_info.value) == "Cannot divide by zero. Please enter a non-zero divisor."
 

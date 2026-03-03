@@ -641,3 +641,68 @@ def test_modulus_by_zero(a: Number, b: Number) -> None:
     # Assert that the exception message contains the expected error message
     assert "Division by zero is not allowed." in str(excinfo.value), \
         f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
+
+@pytest.mark.parametrize(
+    "a, b",
+    [
+        (4, 0),    # Test root by zero
+    ],
+    ids=[
+        "root_by_zero",
+    ]
+)
+def test_root_by_zero(a: Number, b: Number) -> None:
+    """
+    Test the 'root' method of the Operations class with various input combinations.
+
+    This parameterized test verifies that the 'root' method correctly find root of of the
+    first number with the second, handling both positive and negative values, as well as
+    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
+
+    Parameters:
+    - a (Number): The base.
+    - b (Number): The exponent
+    - expected (Number): The expected result of the root.
+
+    """
+    
+    # Use pytest's context manager to check for a ValueError when dividing by zero
+    with pytest.raises(ValueError, match="Zero root is undefined") as excinfo:
+        # Attempt to divide 'a' by 'b', which should raise a ValueError
+        Operations.root(a, b)
+    
+    # Assert that the exception message contains the expected error message
+    assert "Zero root is undefined" in str(excinfo.value), \
+        f"Expected error message 'Zero root is undefined', but got '{excinfo.value}'"
+
+@pytest.mark.parametrize(
+    "a, b",
+    [
+        (-3, 2),    # Test root by negative exponent
+    ],
+    ids=[
+        "root_by_zero",
+    ]
+)
+def test_root_by_negative_base(a: Number, b: Number) -> None:
+    """
+    Test the 'root' method of the Operations class with various input combinations.
+
+    This parameterized test verifies that the 'root' method correctly find root of the
+    first number from the second, handling both positive and negative values, as well as
+    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
+
+    Parameters:
+    - a (Number): The base.
+    - b (Number): The exponent.
+    - expected (Number): The expected result of the root.
+
+    """
+    
+    with pytest.raises(ValueError, match="Cannot calculate root of negative number") as excinfo:
+        Operations.root(a, b)
+    
+    # Assert that the exception message contains the expected error message
+    assert "Cannot calculate root of negative number" in str(excinfo.value), \
+        f"Expected error message 'Cannot calculate root of negative number', but got '{excinfo.value}'"
+

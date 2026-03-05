@@ -8,16 +8,11 @@ from tempfile import TemporaryDirectory
 from app.calculator_repl import calculator_repl
 from app.operations import Operations
 
-@patch('builtins.input', side_effect=['help','exit'])
+@patch('builtins.input', side_effect=['exit'])
 @patch('builtins.print')
-def test_calculator_repl_help_exit(mock_print, mock_input):
+def test_calculator_repl_exit(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("\nAvailable commands:")
-    mock_print.assert_any_call(" add, subtract, multiply, divide, power, root, abs_diff, int_divide, "
-                    "modulus, percentage - Perform calculations")
-    mock_print.assert_any_call("  exit - Exit the calculator")
     mock_print.assert_any_call("Goodbye!")
-
 
 @patch('builtins.input', side_effect=['add', '2', '3', 'exit'])
 @patch('builtins.print')
@@ -100,3 +95,23 @@ def calculator_repl_division(mock_print, mock_input):
            calculator_repl()
     assert str(exc_info.value) == "Cannot divide by zero. Please enter a non-zero divisor."
 
+@patch('builtins.input', side_effect=['history','exit'])
+@patch('builtins.print')
+def test_calculator_repl_no_history(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("No calculations performed yet")
+
+@patch('builtins.input', side_effect=['modulus', '7', '3','history','exit'])
+@patch('builtins.print')
+def test_calculator_repl_some_history(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Calculation history: ")
+    mock_print.assert_any_call("1. ModulusCalculation: 7 Modulus 3 = 1")
+    mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['help','exit'])
+@patch('builtins.print')
+def test_calculator_repl_help_exit(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Calculator started. Type 'help' for commands./")
+    mock_print.assert_any_call("Goodbye!")

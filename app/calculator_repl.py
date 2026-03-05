@@ -16,6 +16,9 @@ def calculator_repl():
     Implements a Read-Eval-Print Loop (REPL) that continuously prompts the user
     for commands, processes arithmetic operations, and manages calculation history.
     """
+
+    history: List[Calculation] = []
+
     try:
 
         print("Calculator started. Type 'help' for commands./")
@@ -26,16 +29,35 @@ def calculator_repl():
 
                 if command == 'help':
                     # Display available commands
-                    print("\nAvailable commands:")
-                    print(" add, subtract, multiply, divide, power, root, abs_diff, int_divide, "
-                    "modulus, percentage - Perform calculations")
-                    print("  exit - Exit the calculator")
+                    help_message = """
+    Calculator REPL Help
+    --------------------
+    Available commands:
+    add, subtract, multiply, divide, power, root, abs_diff, int_divide,
+    modulus, percentage
+
+    Special Commands:
+        help      : Display this help message.
+        history   : Show the history of calculations.
+        exit      : Exit the calculator.
+
+                            """
+                    print(help_message)
                     continue
 
                 if command == 'exit':
                     print("Goodbye!")
                     break
-
+                
+                if command == 'history':
+                    if not(history):
+                        print("No calculations performed yet")
+                    else:
+                        print("Calculation history: ")
+                        for idx, calculation in enumerate(history, start =1):
+                             print(f"{idx}. {calculation}")
+                    continue
+                
                 if command in ['add', 'subtract', 'multiply', 'divide', 'power', 'root',
                                'modulus', 'int_divide', 'percent', 'abs_diff']:
                     # Perform the specified arithmetic operation
@@ -71,17 +93,18 @@ def calculator_repl():
                             result = calculation.execute()
                     except ZeroDivisionError:
                             # Handle division by zero specifically
-                            print("Cannot divide by zero. Please enter a non-zero divisor.\n")
+                            print("Cannot divide by zero. Please enter a non-zero divisor.")
                             continue  # Prompt the user again
                     except Exception as e:
                             # Handle any other unforeseen exceptions
-                            print(f"An error occurred during calculation: {e}. Please try again.\n")
+                            print(f"An error occurred during calculation: {e}. Please try again.")
                             continue  # Prompt the user again
                         
                     print(f"\nResult: {result}")
-                        
-                # Handle unknown commands
-                print(f"Unknown command: '{command}'. Type 'help' for available commands.")
+                    history.append(calculation)
+                else:       
+                    # Handle unknown commands
+                    print(f"Unknown command: '{command}'. Type 'help' for available commands.")
 
             except KeyboardInterrupt:
                 # Handle Ctrl+C interruption gracefully

@@ -1,0 +1,65 @@
+2026-03-06 18:56:19,561 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 18:57:54,164 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 18:57:54,165 - INFO - Calculator initialized with configuration
+2026-03-06 18:58:33,310 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 18:58:33,310 - INFO - Calculator initialized with configuration
+2026-03-06 19:04:07,685 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 19:04:07,685 - INFO - Calculator initialized with configuration
+2026-03-06 19:04:41,485 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 19:04:41,485 - INFO - Calculator initialized with configuration
+2026-03-06 19:08:18,902 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 19:08:18,903 - INFO - Calculator initialized with configuration
+2026-03-06 19:12:04,404 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 19:12:04,404 - INFO - Calculator initialized with configuration
+2026-03-06 19:12:08,592 - INFO - Set operation: Addition
+2026-03-06 19:12:43,420 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 19:12:43,420 - INFO - Calculator initialized with configuration
+2026-03-06 19:12:45,755 - INFO - Set operation: Addition
+2026-03-06 21:41:57,534 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:41:57,535 - INFO - Calculator initialized with configuration
+2026-03-06 21:42:00,222 - INFO - Set operation: Addition
+2026-03-06 21:42:39,664 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:42:39,664 - INFO - Calculator initialized with configuration
+2026-03-06 21:42:42,478 - INFO - Set operation: Addition
+2026-03-06 21:42:48,084 - INFO - Set operation: Power
+2026-03-06 21:43:53,922 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:43:53,922 - INFO - Calculator initialized with configuration
+2026-03-06 21:43:56,363 - INFO - Set operation: Addition
+2026-03-06 21:44:43,439 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:44:43,439 - INFO - Calculator initialized with configuration
+2026-03-06 21:46:15,142 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:46:15,142 - INFO - Calculator initialized with configuration
+2026-03-06 21:46:46,663 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:46:46,663 - INFO - Calculator initialized with configuration
+2026-03-06 21:48:57,245 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:48:57,245 - INFO - Calculator initialized with configuration
+2026-03-06 21:49:16,889 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:49:16,889 - INFO - Calculator initialized with configuration
+2026-03-06 21:49:19,084 - INFO - Set operation: Addition
+2026-03-06 21:49:43,835 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:49:43,835 - INFO - Calculator initialized with configuration
+2026-03-06 21:49:45,868 - INFO - Set operation: Addition
+2026-03-06 21:51:03,504 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:51:03,504 - INFO - Calculator initialized with configuration
+2026-03-06 21:51:05,438 - INFO - Set operation: Addition
+2026-03-06 21:52:23,385 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 21:52:23,385 - INFO - Calculator initialized with configuration
+2026-03-06 21:52:25,282 - INFO - Set operation: Addition
+2026-03-06 21:52:32,998 - INFO - Set operation: Power
+2026-03-06 22:10:58,746 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 22:10:58,750 - INFO - Calculator initialized with configuration
+2026-03-06 22:11:16,030 - INFO - Set operation: AbsoluteDifference
+2026-03-06 22:11:29,727 - INFO - Set operation: Root
+2026-03-06 22:11:34,744 - INFO - Set operation: Power
+2026-03-06 22:11:42,014 - INFO - Set operation: IntegerDivide
+2026-03-06 22:11:54,309 - INFO - Set operation: Modulus
+2026-03-06 22:12:09,733 - INFO - Set operation: Percentage
+2026-03-06 22:12:14,480 - INFO - Set operation: Percentage
+2026-03-06 22:12:23,053 - INFO - Set operation: Percentage
+2026-03-06 22:13:42,787 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 22:13:42,788 - INFO - Calculator initialized with configuration
+2026-03-06 22:13:49,242 - INFO - Set operation: Percentage
+2026-03-06 22:14:03,732 - INFO - Set operation: Percentage
+2026-03-06 22:17:54,755 - INFO - Logging initialized at: /home/garsande/projects/midterm/logs/calculator.log
+2026-03-06 22:17:54,756 - INFO - Calculator initialized with configuration
+2026-03-06 22:18:03,684 - INFO - Set operation: Root

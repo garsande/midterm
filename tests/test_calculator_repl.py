@@ -6,7 +6,7 @@ from unittest.mock import Mock, patch, PropertyMock
 from decimal import Decimal
 from tempfile import TemporaryDirectory
 from app.calculator_repl import calculator_repl
-from app.operations import Operations
+from app.operations import Operation, OperationFactory
 
 @patch('builtins.input', side_effect=['exit'])
 @patch('builtins.print')
@@ -55,7 +55,7 @@ def test_calculator_repl_power_cancelled(mock_print, mock_input):
 @patch('builtins.print')
 def test_calculator_repl_root(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("\nResult: 4.000000000000000000000000000")
+    mock_print.assert_any_call("\nResult: 4")
 
 @patch('builtins.input', side_effect=['root', '16', 'cancel', 'exit'])
 @patch('builtins.print')
@@ -106,7 +106,7 @@ def test_calculator_repl_no_history(mock_print, mock_input):
 def test_calculator_repl_some_history(mock_print, mock_input):
     calculator_repl()
     mock_print.assert_any_call("Calculation history: ")
-    mock_print.assert_any_call("1. ModulusCalculation: 7 Modulus 3 = 1")
+    mock_print.assert_any_call("1. Modulus: 7 modulus 3 = 1")
     mock_print.assert_any_call("Goodbye!")
 
 @patch('builtins.input', side_effect=['help','exit'])

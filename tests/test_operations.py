@@ -1,708 +1,306 @@
-""" 
-tests/test_operations.py 
+import pytest
+from decimal import Decimal
+from typing import Any, Dict, Type
 
-This module contains unit tests for the Operations class, which performs basic arithmetic 
-operations such as addition, subtraction, multiplication, and division. By utilizing 
-parameterized tests with pytest, we can efficiently test multiple scenarios with 
-different input values, ensuring that each method behaves as expected under various conditions.
-
-Parameterized tests help in reducing code duplication and enhancing test coverage by allowing 
-the same test logic to run with different inputs and expected outcomes.
-
-"""
-
-import pytest  # Import the pytest framework for writing and running tests
-from typing import Union  # Import Union for type hinting multiple possible types
-from app.operations import Operations  # Import the Operations class from the operations module
-
-# Define a type alias for numbers that can be either int or float
-Number = Union[int, float]
-
-# ---------------------------------------------
-# Unit Tests for the 'addition' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (2, 3, 5),           # Test adding two positive integers
-        (0, 0, 0),           # Test adding two zeros
-        (-1, 1, 0),          # Test adding a negative and a positive integer
-        (2.5, 3.5, 6.0),     # Test adding two positive floats
-        (-2.5, 3.5, 1.0),    # Test adding a negative float and a positive float
-    ],
-    ids=[
-        "add_two_positive_integers",
-        "add_two_zeros",
-        "add_negative_and_positive_integer",
-        "add_two_positive_floats",
-        "add_negative_float_and_positive_float",
-    ]
-)
-def test_addition(a: Number, b: Number, expected: Number) -> None:
-    """
-    Test the 'addition' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'addition' method correctly adds two numbers,
-    whether they are positive, negative, integers, or floats. By using parameterization,
-    we can efficiently test multiple scenarios without redundant code.
-
-    Parameters:
-    - a (Number): The first number to add.
-    - b (Number): The second number to add.
-    - expected (Number): The expected result of the addition.
-
-    Steps:
-    1. Call the 'addition' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_addition(2, 3, 5)
-    >>> test_addition(-1, 1, 0)
-    """
-    # Create an instance of the Operations class
-    
-    # Call the 'addition' method with the provided arguments
-    result = Operations.addition(a, b)
-    
-    # Assert that the result of addition(a, b) matches the expected value
-    assert result == expected, f"Expected addition({a}, {b}) to be {expected}, but got {result}"
-
-# ---------------------------------------------
-# Unit Tests for the 'subtraction' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (5, 3, 2),           # Test subtracting a smaller positive integer from a larger one
-        (0, 0, 0),           # Test subtracting two zeros
-        (-5, -3, -2),        # Test subtracting a negative integer from another negative integer
-        (10.5, 5.5, 5.0),    # Test subtracting two positive floats
-        (-10.5, -5.5, -5.0), # Test subtracting two negative floats
-    ],
-    ids=[
-        "subtract_smaller_positive_integer_from_larger",
-        "subtract_two_zeros",
-        "subtract_negative_integer_from_negative_integer",
-        "subtract_two_positive_floats",
-        "subtract_two_negative_floats",
-    ]
-)
-def test_subtraction(a: Number, b: Number, expected: Number) -> None:
-    """
-    Test the 'subtraction' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'subtraction' method correctly subtracts the
-    second number from the first, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number from which to subtract.
-    - b (Number): The number to subtract.
-    - expected (Number): The expected result of the subtraction.
-
-    Steps:
-    1. Call the 'subtraction' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_subtraction(5, 3, 2)
-    >>> test_subtraction(-5, -3, -2)
-    """
-    # Create an instance of the Operations class
-    
-    # Call the 'subtraction' method with the provided arguments
-    result = Operations().subtraction(a, b)
-    
-    # Assert that the result of subtraction(a, b) matches the expected value
-    assert result == expected, f"Expected subtraction({a}, {b}) to be {expected}, but got {result}"
-
-# ---------------------------------------------
-# Unit Tests for the 'multiplication' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (2, 3, 6),           # Test multiplying two positive integers
-        (0, 10, 0),          # Test multiplying zero with a positive integer
-        (-2, -3, 6),         # Test multiplying two negative integers
-        (2.5, 4.0, 10.0),    # Test multiplying two positive floats
-        (-2.5, 4.0, -10.0),  # Test multiplying a negative float with a positive float
-    ],
-    ids=[
-        "multiply_two_positive_integers",
-        "multiply_zero_with_positive_integer",
-        "multiply_two_negative_integers",
-        "multiply_two_positive_floats",
-        "multiply_negative_float_with_positive_float",
-    ]
-)
-def test_multiplication(a: Number, b: Number, expected: Number) -> None:
-    """
-    Test the 'multiplication' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'multiplication' method correctly multiplies two numbers,
-    handling both positive and negative values, as well as integers and floats. Parameterization
-    enables efficient testing of multiple scenarios in a concise manner.
-
-    Parameters:
-    - a (Number): The first number to multiply.
-    - b (Number): The second number to multiply.
-    - expected (Number): The expected result of the multiplication.
-
-    Steps:
-    1. Call the 'multiplication' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_multiplication(2, 3, 6)
-    >>> test_multiplication(-2, -3, 6)
-    """
-    
-    # Call the 'multiplication' method with the provided arguments
-    result = Operations.multiplication(a, b)
-    
-    # Assert that the result of multiplication(a, b) matches the expected value
-    assert result == expected, f"Expected multiplication({a}, {b}) to be {expected}, but got {result}"
-
-# ---------------------------------------------
-# Unit Tests for the 'division' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (6, 3, 2.0),           # Test dividing two positive integers
-        (-6, -3, 2.0),         # Test dividing two negative integers
-        (6.0, 3.0, 2.0),       # Test dividing two positive floats
-        (-6.0, 3.0, -2.0),     # Test dividing a negative float by a positive float
-        (0, 5, 0.0),            # Test dividing zero by a positive integer
-    ],
-    ids=[
-        "divide_two_positive_integers",
-        "divide_two_negative_integers",
-        "divide_two_positive_floats",
-        "divide_negative_float_by_positive_float",
-        "divide_zero_by_positive_integer",
-    ]
-)
-def test_division(a: Number, b: Number, expected: float) -> None:
-    """
-    Test the 'division' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'division' method correctly divides the first
-    number by the second, handling both positive and negative values, as well as integers
-    and floats. Parameterization allows for efficient and comprehensive testing across multiple cases.
-
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor.
-    - expected (float): The expected result of the division.
-
-    Steps:
-    1. Call the 'division' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_division(6, 3, 2.0)
-    >>> test_division(-6, 3, -2.0)
-    """
-    # Call the 'division' method with the provided arguments
-    result = Operations.division(a, b)
-    
-    # Assert that the result of division(a, b) matches the expected value
-    assert result == expected, f"Expected division({a}, {b}) to be {expected}, but got {result}"
-
-# ---------------------------------------------
-# Negative Test Case: Division by Zero
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (1, 0),    # Test dividing by zero with positive dividend
-        (-1, 0),   # Test dividing by zero with negative dividend
-        (0, 0),    # Test dividing zero by zero
-    ],
-    ids=[
-        "divide_positive_dividend_by_zero",
-        "divide_negative_dividend_by_zero",
-        "divide_zero_by_zero",
-    ]
-)
-def test_division_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'division' method of the Operations class when dividing by zero.
-
-    This negative test case verifies that attempting to divide by zero raises a ValueError
-    with the appropriate error message. It ensures that the application correctly handles
-    invalid operations and provides meaningful feedback to the user.
-
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor (zero in this case).
-
-    Steps:
-    1. Attempt to call the 'division' method with arguments 'a' and 'b', which should raise a ValueError.
-    2. Use pytest's 'raises' context manager to catch the expected exception.
-    3. Assert that the error message contains "Division by zero is not allowed.".
-
-    Example:
-    >>> test_division_by_zero(1, 0)
-    >>> test_division_by_zero(-1, 0)
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.division(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Division by zero is not allowed." in str(excinfo.value), \
-        f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
-
-# ---------------------------------------------
-# Unit Tests for the 'division' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (2, 3, 8.0),           # Test power of two positive integers
-        (-3, 2, 9.0),         # Test power of one negative and one positive integers
-        (-2, 3, -8.0),       # Test power of one positive and one negative integers
-    ],
-    ids=[
-        "power_two_positive_integers",
-        "power_two_negative_integers",
-        "power_two_positive_floats",
-    ]
+from app.exceptions import ValidationError,OperationError
+from app.operations import (
+    Operation,
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division,
+    Power,
+    Root,
+    Modulus,
+    AbsoluteDifference,
+    IntegerDivide,
+    Percentage,
+    OperationFactory,
 )
 
-def test_power(a: Number, b: Number, expected: float) -> None:
-    """
-    Test the 'power' method of the Operations class with various input combinations.
 
-    This parameterized test verifies that the 'power' method correctly finds the power of the first
-    number to the second, handling both positive and negative values. 
-    Parameterization allows for efficient and comprehensive testing across multiple cases.
+class TestOperation:
+    """Test base Operation class functionality."""
 
-    Parameters:
-    - a (Number): The base.
-    - b (Number): The exponent.
-    - expected (float): The expected result of the power.
+    def test_str_representation(self):
+        """Test that string representation returns class name."""
+        class TestOp(Operation):
+            def execute(self, a: Decimal, b: Decimal) -> Decimal:
+                return a
 
-    Steps:
-    1. Call the 'power' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    """
-    result = Operations.power(a, b)
-    
-    # Assert that the result of power(a, b) matches the expected value
-    assert result == expected, f"Expected power({a}, {b}) to be {expected}, but got {result}"
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (27, 3, 3.0),           # Test root of two positive integers
-        (16, -2, 0.2500000000000000000000000000),         # Test root of one negative and one positive integers
-    ],
-    ids=[
-        "root_two_positive_integers",
-        "root_with_negative_exponent",
-    ]
-)
-
-def test_root(a: Number, b: Number, expected: float) -> None:
-    """
-    Test the 'root' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'root' method correctly finds the root of first
-    number with the second as exponent.
-    Parameterization allows for efficient and comprehensive testing across multiple cases.
-
-    Parameters:
-    - a (Number): The base.
-    - b (Number): The exponent.
-    - expected (float): The expected result of the root.
-
-    """
-    result = Operations.root(a, b)
-    
-    # Assert that the result of root(a, b) matches the expected value
-    assert result == expected, f"Expected root({a}, {b}) to be {expected}, but got {result}"
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (8, 3, 2.0),           # Test dividing two positive integers
-        (-6, -3, 2.0),         # Test dividing two negative integers
-        (7.0, 3.0, 2.0),       # Test dividing two positive floats
-        (-7.0, 3.0, -3.0),     # Test dividing a negative float by a positive float
-        (0, 5, 0.0),            # Test dividing zero by a positive integer
-    ],
-    ids=[
-        "integer_divide_two_positive_integers",
-        "integer_divide_two_negative_integers",
-        "integer_divide_two_positive_floats",
-        "integer_divide_negative_float_by_positive_float",
-        "integer_divide_zero_by_positive_integer",
-    ]
-)
-def test_int_division(a: Number, b: Number, expected: float) -> None:
-    """
-    Test the 'integer division' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'integer division' method correctly divides the first
-    number by the second, handling both positive and negative values, as well as integers
-    and floats. Parameterization allows for efficient and comprehensive testing across multiple cases.
-
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor.
-    - expected (float): The expected result of the integer division.
-
-    Steps:
-    1. Call the 'integer division' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_integer_division(6, 3, 2.0)
-    >>> test_integer_division(-6, 3, -2.0)
-    """
-    # Call the 'division' method with the provided arguments
-    result = Operations.integerDivide(a, b)
-    
-    # Assert that the result of division(a, b) matches the expected value
-    assert result == expected, f"Expected Int division({a}, {b}) to be {expected}, but got {result}"
-
-# ---------------------------------------------
-# Negative Test Case: Division by Zero
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (1, 0),    # Test integer dividing by zero with positive dividend
-        (-1, 0),   # Test integer dividing by zero with negative dividend
-        (0, 0),    # Test integer dividing zero by zero
-    ],
-    ids=[
-        "integer_divide_positive_dividend_by_zero",
-        "integer_divide_negative_dividend_by_zero",
-        "integer_divide_zero_by_zero",
-    ]
-)
-def test_integer_division_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'integer division' method of the Operations class when dividing by zero.
-
-    This negative test case verifies that attempting to divide by zero raises a ValueError
-    with the appropriate error message. It ensures that the application correctly handles
-    invalid operations and provides meaningful feedback to the user.
-
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor (zero in this case).
-
-    Steps:
-    1. Attempt to call the 'integer division' method with arguments 'a' and 'b', which should raise a ValueError.
-    2. Use pytest's 'raises' context manager to catch the expected exception.
-    3. Assert that the error message contains "Division by zero is not allowed.".
-
-    Example:
-    >>> test_integer_division_by_zero(1, 0)
-    >>> test_integer_division_by_zero(-1, 0)
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.integerDivide(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Division by zero is not allowed." in str(excinfo.value), \
-        f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
-
-# ---------------------------------------------
-# Unit Tests for the 'absolute subtraction' Method
-# ---------------------------------------------
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (3, 5, 2),           # Test subtracting a smaller positive integer from a larger one
-        (0, 0, 0),           # Test subtracting two zeros
-        (-5, -3, 2),        # Test subtracting a negative integer from another negative integer
-        (10.5, 5.5, 5.0),    # Test subtracting two positive floats
-        (-10.5, -5.5, 5.0), # Test subtracting two negative floats
-    ],
-    ids=[
-        "subtract_smaller_positive_integer_from_larger",
-        "subtract_two_zeros",
-        "subtract_negative_integer_from_negative_integer",
-        "subtract_two_positive_floats",
-        "subtract_two_negative_floats",
-    ]
-)
-def test_absolute_subtraction(a: Number, b: Number, expected: Number) -> None:
-    """
-    Test the 'absolute subtraction' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'absolute subtraction' method correctly subtracts the
-    second number from the first, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number from which to subtract.
-    - b (Number): The number to subtract.
-    - expected (Number): The expected result of the absolute subtraction.
-
-    Steps:
-    1. Call the 'absolute subtraction' method with arguments 'a' and 'b'.
-    2. Assert that the result is equal to 'expected'.
-
-    Example:
-    >>> test_subtraction(5, 3, 2)
-    >>> test_subtraction(-5, -3, -2)
-    """
-    # Create an instance of the Operations class
-    
-    # Call the 'subtraction' method with the provided arguments
-    result = Operations().absoluteDifference(a, b)
-    
-    # Assert that the result of subtraction(a, b) matches the expected value
-    assert result == expected, f"Expected absolute subtraction({a}, {b}) to be {expected}, but got {result}"
-
-@pytest.mark.parametrize(
-    "a, b, expected",
-    [
-        (3, 10, 30.0),           # Test power 
-        (5, 20, 25.0),           # Test power
-    ],
-    ids=[
-        "power_two_positive",
-        "power_two_numbers",
-    ]
-)
-def test_percentage(a: Number, b: Number, expected: Number) -> None:
-    """
-    Test the 'percent' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'percent' method correctly find percent of the
-    first number from the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number which is the part.
-    - b (Number): The whole from which percent is expected.
-    - expected (Number): The expected result of the percentage.
-
-    """
-    
-    # Call the 'percent' method with the provided arguments
-    result = Operations().percentage(a, b)
-    
-    # Assert that the result of subtraction(a, b) matches the expected value
-    assert result == expected, f"Expected percentage({a}, {b}) to be {expected}, but got {result}"
-
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (1, 0),    # Test percent by zero
-    ],
-    ids=[
-        "percent_by_zero",
-    ]
-)
-def test_percent_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'percent' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'percent' method correctly find percent of the
-    first number from the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number which is the part.
-    - b (Number): The whole from which percent is expected.
-    - expected (Number): The expected result of the percentage.
-
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.percentage(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Division by zero is not allowed." in str(excinfo.value), \
-        f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
-
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (1, 0),    # Test percent by zero
-    ],
-    ids=[
-        "percent_by_zero",
-    ]
-)
-def test_percent_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'percent' method of the Operations class with various input combinations.
-
-    This parameterized test verifies that the 'percent' method correctly find percent of the
-    first number from the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
-
-    Parameters:
-    - a (Number): The number which is the part.
-    - b (Number): The whole from which percent is expected.
-    - expected (Number): The expected result of the percentage.
-
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.percentage(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Division by zero is not allowed." in str(excinfo.value), \
-        f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
+        assert str(TestOp()) == "TestOp"
 
 
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (3, -2),    # Test power by negative exponent
-    ],
-    ids=[
-        "power_by_zero",
-    ]
-)
-def test_power_by_negative_exponent(a: Number, b: Number) -> None:
-    """
-    Test the 'percent' method of the Operations class with various input combinations.
+class BaseOperationTest:
+    """Base test class for all operations."""
 
-    This parameterized test verifies that the 'percent' method correctly find percent of the
-    first number from the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
+    operation_class: Type[Operation]
+    valid_test_cases: Dict[str, Dict[str, Any]]
+    invalid_test_cases: Dict[str, Dict[str, Any]]
 
-    Parameters:
-    - a (Number): The number which is the part.
-    - b (Number): The whole from which percent is expected.
-    - expected (Number): The expected result of the percentage.
+    def test_valid_operations(self):
+        """Test operation with valid inputs."""
+        operation = self.operation_class()
+        for name, case in self.valid_test_cases.items():
+            a = Decimal(str(case["a"]))
+            b = Decimal(str(case["b"]))
+            expected = Decimal(str(case["expected"]))
+            result = operation.execute(a, b)
+            assert result == expected, f"Failed case: {name}"
 
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Negative exponents not supported") as excinfo:
-        Operations.power(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Negative exponents not supported" in str(excinfo.value), \
-        f"Expected error message 'Negative exponents not supported', but got '{excinfo.value}'"
+    def test_invalid_operations(self):
+        """Test operation with invalid inputs raises appropriate errors."""
+        operation = self.operation_class()
+        for name, case in self.invalid_test_cases.items():
+            a = Decimal(str(case["a"]))
+            b = Decimal(str(case["b"]))
+            error = case.get("error", ValidationError)
+            error_message = case.get("message", "")
+
+            with pytest.raises(error, match=error_message):
+                operation.execute(a, b)
 
 
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (4, 0),    # Test modulus by zero
-    ],
-    ids=[
-        "modulus_by_zero",
-    ]
-)
-def test_modulus_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'modulus' method of the Operations class with various input combinations.
+class TestAddition(BaseOperationTest):
+    """Test Addition operation."""
 
-    This parameterized test verifies that the 'modulus' method correctly find remiander of the
-    first number when divided the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
+    operation_class = Addition
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "3", "expected": "8"},
+        "negative_numbers": {"a": "-5", "b": "-3", "expected": "-8"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "-2"},
+        "zero_sum": {"a": "5", "b": "-5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "3.3", "expected": "8.8"},
+        "large_numbers": {
+            "a": "1e10",
+            "b": "1e10",
+            "expected": "20000000000"
+        },
+    }
+    invalid_test_cases = {}  # Addition has no invalid cases
 
-    Parameters:
-    - a (Number): The dividend.
-    - b (Number): The divisor
-    - expected (Number): The expected result of the modulus.
 
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Division by zero is not allowed.") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.modulus(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Division by zero is not allowed." in str(excinfo.value), \
-        f"Expected error message 'Division by zero is not allowed.', but got '{excinfo.value}'"
+class TestSubtraction(BaseOperationTest):
+    """Test Subtraction operation."""
 
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (4, 0),    # Test root by zero
-    ],
-    ids=[
-        "root_by_zero",
-    ]
-)
-def test_root_by_zero(a: Number, b: Number) -> None:
-    """
-    Test the 'root' method of the Operations class with various input combinations.
+    operation_class = Subtraction
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "3", "expected": "2"},
+        "negative_numbers": {"a": "-5", "b": "-3", "expected": "-2"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "-8"},
+        "zero_result": {"a": "5", "b": "5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "3.3", "expected": "2.2"},
+        "large_numbers": {
+            "a": "1e10",
+            "b": "1e9",
+            "expected": "9000000000"
+        },
+    }
+    invalid_test_cases = {}  # Subtraction has no invalid cases
 
-    This parameterized test verifies that the 'root' method correctly find root of of the
-    first number with the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
 
-    Parameters:
-    - a (Number): The base.
-    - b (Number): The exponent
-    - expected (Number): The expected result of the root.
+class TestMultiplication(BaseOperationTest):
+    """Test Multiplication operation."""
 
-    """
-    
-    # Use pytest's context manager to check for a ValueError when dividing by zero
-    with pytest.raises(ValueError, match="Zero root is undefined") as excinfo:
-        # Attempt to divide 'a' by 'b', which should raise a ValueError
-        Operations.root(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Zero root is undefined" in str(excinfo.value), \
-        f"Expected error message 'Zero root is undefined', but got '{excinfo.value}'"
+    operation_class = Multiplication
+    valid_test_cases = {
+        "positive_numbers": {"a": "5", "b": "3", "expected": "15"},
+        "negative_numbers": {"a": "-5", "b": "-3", "expected": "15"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "-15"},
+        "multiply_by_zero": {"a": "5", "b": "0", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "3.3", "expected": "18.15"},
+        "large_numbers": {
+            "a": "1e5",
+            "b": "1e5",
+            "expected": "10000000000"
+        },
+    }
+    invalid_test_cases = {}  # Multiplication has no invalid cases
 
-@pytest.mark.parametrize(
-    "a, b",
-    [
-        (-3, 2),    # Test root by negative exponent
-    ],
-    ids=[
-        "root_by_zero",
-    ]
-)
-def test_root_by_negative_base(a: Number, b: Number) -> None:
-    """
-    Test the 'root' method of the Operations class with various input combinations.
 
-    This parameterized test verifies that the 'root' method correctly find root of the
-    first number from the second, handling both positive and negative values, as well as
-    integers and floats. Parameterization allows for comprehensive testing of multiple cases.
+class TestDivision(BaseOperationTest):
+    """Test Division operation."""
 
-    Parameters:
-    - a (Number): The base.
-    - b (Number): The exponent.
-    - expected (Number): The expected result of the root.
+    operation_class = Division
+    valid_test_cases = {
+        "positive_numbers": {"a": "6", "b": "2", "expected": "3"},
+        "negative_numbers": {"a": "-6", "b": "-2", "expected": "3"},
+        "mixed_signs": {"a": "-6", "b": "2", "expected": "-3"},
+        "decimals": {"a": "5.5", "b": "2", "expected": "2.75"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
 
-    """
-    
-    with pytest.raises(ValueError, match="Cannot calculate root of negative number") as excinfo:
-        Operations.root(a, b)
-    
-    # Assert that the exception message contains the expected error message
-    assert "Cannot calculate root of negative number" in str(excinfo.value), \
-        f"Expected error message 'Cannot calculate root of negative number', but got '{excinfo.value}'"
 
+class TestPower(BaseOperationTest):
+    """Test Power operation."""
+
+    operation_class = Power
+    valid_test_cases = {
+        "positive_base_and_exponent": {"a": "2", "b": "3", "expected": "8"},
+        "zero_exponent": {"a": "5", "b": "0", "expected": "1"},
+        "one_exponent": {"a": "5", "b": "1", "expected": "5"},
+        "decimal_base": {"a": "2.5", "b": "2", "expected": "6.25"},
+        "zero_base": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "negative_exponent": {
+            "a": "2",
+            "b": "-3",
+            "error": ValidationError,
+            "message": "Negative exponents not supported"
+        },
+    }
+
+
+class TestRoot(BaseOperationTest):
+    """Test Root operation."""
+
+    operation_class = Root
+    valid_test_cases = {
+        "square_root": {"a": "9", "b": "2", "expected": "3"},
+        "cube_root": {"a": "27", "b": "3", "expected": "3"},
+        "fourth_root": {"a": "16", "b": "4", "expected": "2"},
+        "decimal_root": {"a": "2.25", "b": "2", "expected": "1.5"},
+    }
+    invalid_test_cases = {
+        "negative_base": {
+            "a": "-9",
+            "b": "2",
+            "error": ValidationError,
+            "message": "Cannot calculate root of negative number"
+        },
+        "zero_root": {
+            "a": "9",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Zero root is undefined"
+        },
+    }
+
+class TestIntegerDivision(BaseOperationTest):
+    """Test Integer Division operation."""
+
+    operation_class = IntegerDivide
+    valid_test_cases = {
+        "positive_numbers": {"a": "7", "b": "2", "expected": "3"},
+        "negative_numbers": {"a": "-6", "b": "-2", "expected": "3"},
+        "mixed_signs": {"a": "-6", "b": "2", "expected": "-3"},
+        "decimals": {"a": "5.5", "b": "2", "expected": "2"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Division by zero is not allowed"
+        },
+    }
+
+class TestModulus(BaseOperationTest):
+    """Test Modulus operation."""
+
+    operation_class = Modulus
+    valid_test_cases = {
+        "positive_numbers": {"a": "7", "b": "2", "expected": "1"},
+        "negative_numbers": {"a": "-6", "b": "-4", "expected": "-2"},
+        "mixed_signs": {"a": "-6", "b": "4", "expected": "-2"},
+        "decimals": {"a": "5", "b": "2", "expected": "1"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Zero base is undefined"
+        },
+    }
+
+class TestAbsoluteDifference(BaseOperationTest):
+    """Test Subtraction operation."""
+
+    operation_class = AbsoluteDifference
+    valid_test_cases = {
+        "positive_numbers": {"a": "13", "b": "15", "expected": "2"},
+        "negative_numbers": {"a": "-3", "b": "-5", "expected": "2"},
+        "mixed_signs": {"a": "-5", "b": "3", "expected": "8"},
+        "zero_result": {"a": "5", "b": "5", "expected": "0"},
+        "decimals": {"a": "5.5", "b": "3.3", "expected": "2.2"},
+        "large_numbers": {
+            "a": "1e10",
+            "b": "1e9",
+            "expected": "9000000000"
+        },
+    }
+    invalid_test_cases = {}  # Abs Subtraction has no invalid cases
+
+class TestPercentage(BaseOperationTest):
+    """Test Percentage operation."""
+
+    operation_class = Percentage
+    valid_test_cases = {
+        "positive_numbers": {"a": "2", "b": "10", "expected": "20"},
+        "negative_numbers": {"a": "-2", "b": "-8", "expected": "25"},
+        "divide_zero": {"a": "0", "b": "5", "expected": "0"},
+    }
+    invalid_test_cases = {
+        "divide_by_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Zero base is undefined"
+        },
+    }
+
+class TestOperationFactory:
+    """Test OperationFactory functionality."""
+
+    def test_create_valid_operations(self):
+        """Test creation of all valid operations."""
+        operation_map = {
+            'add': Addition,
+            'subtract': Subtraction,
+            'multiply': Multiplication,
+            'divide': Division,
+            'power': Power,
+            'root': Root,
+        }
+
+        for op_name, op_class in operation_map.items():
+            operation = OperationFactory.create_operation(op_name)
+            assert isinstance(operation, op_class)
+            # Test case-insensitive
+            operation = OperationFactory.create_operation(op_name.upper())
+            assert isinstance(operation, op_class)
+
+    def test_create_invalid_operation(self):
+        """Test creation of invalid operation raises error."""
+        with pytest.raises(ValueError, match="Unknown operation: invalid_op"):
+            OperationFactory.create_operation("invalid_op")
+
+    def test_register_valid_operation(self):
+        """Test registering a new valid operation."""
+        class NewOperation(Operation):
+            def execute(self, a: Decimal, b: Decimal) -> Decimal:
+                return a
+
+        OperationFactory.register_operation("new_op", NewOperation)
+        operation = OperationFactory.create_operation("new_op")
+        assert isinstance(operation, NewOperation)
+
+    def test_register_invalid_operation(self):
+        """Test registering an invalid operation class raises error."""
+        class InvalidOperation:
+            pass
+
+        with pytest.raises(TypeError, match="Operation class must inherit"):
+            OperationFactory.register_operation("invalid", InvalidOperation)

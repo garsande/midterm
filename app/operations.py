@@ -1,143 +1,288 @@
-## Operations.py ##
+########################
+# Operation Classes    #
+########################
 
+from abc import ABC, abstractmethod
 from decimal import Decimal
+from typing import Dict
+from app.exceptions import ValidationError
 
-class Operations:
+
+class Operation(ABC):
     """
-        Starting with the basic Operation class which encapsulates basic arithmetic operations as static methods.
-        Eventually planning to change this class to use Factory pattern to create operations. them to 
-        
+    Abstract base class for calculator operations.
+
+    Defines the interface for all arithmetic operations. Each operation must
+    implement the execute method and can optionally override operand validation.
     """
 
-    @staticmethod  
-    def addition(a:Decimal, b:Decimal) -> Decimal:
+    @abstractmethod
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
-        Adds two numbers and returns the result.
+        Execute the operation.
 
-        **Parameters:**
-        - a (Decimal): The first number to add.
-        - b (Decimal): The second number to add.
-        
-        **Returns:**
-        - Decimal: The sum of a and b.
+        Performs the arithmetic operation on the provided operands.
 
-        **Example:**
-        >>> Operation.addition(5.0, 3.0)
-        8.0
-        """
-        return a + b  # Add two numbers and returns the result.
-    
-    @staticmethod  
-    def subtraction(a:Decimal, b:Decimal) -> Decimal:
-        """
-        Subtracts the second number from the first and returns the result.
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
 
-        **Parameters:**
-        - a (Decimal): The number from which to subtract.
-        - b (Decimal): The number to subtract.
-        
-        **Returns:**
-        - Decimal: The difference between a and b.
+        Returns:
+            Decimal: Result of the operation.
 
-        **Example:**
-        >>> Operation.subtraction(10.0, 4.0)
-        6.0
-        """
-        return a - b  # Subtract two numbers and returns the result.
-    
-    @staticmethod
-    def multiplication(a: Decimal, b: Decimal) -> Decimal:
-        """
-        Multiplies two numbers and returns the product.
-
-        **Parameters:**
-        - a (Decimal): The first number to multiply.
-        - b (Decimal): The second number to multiply.
-        
-        **Returns:**
-        - Decimal: The product of a and b.
-
-        **Example:**
-        >>> Operation.multiplication(2.0, 3.0)
-        6.0
-
-        """
-        return a * b  # Multiplies the two numbers and returns the product.
-    
-    @staticmethod
-    def division(a: Decimal, b: Decimal) -> Decimal:
-        """
-        Divides the first number by the second and returns the quotient.
-
-        **Parameters:**
-        - a (Decimal): The dividend.
-        - b (Decimal): The divisor.
-        
-        **Returns:**
-        - Decimal: The quotient of a divided by b.
-
-        **Raises:**
-        - ValueError: If the divisor b is zero, as division by zero is undefined.
-
-        **Example:**
-        >>> Operation.division(10.0, 2.0)
-        5.0
-        """
-        if b == 0:
-            raise ValueError("Division by zero is not allowed.")  # Raises an error if division by zero is attempted.
-        return a / b  # Divides a by b and returns the quotient.
-    
-    @staticmethod
-    def power(a: Decimal, b: Decimal) -> Decimal:
-        """
-        Takes two numbers and returns the power of the base raised to exponent.
-
-        **Parameters:**
-        - a (Decimal): The base number.
-        - b (Decimal): The exponent.
-        
-        **Returns:**
-        - Decimal: The base  a raised to the exponent of b.
-
-        **Example:**
-        >>> Operation.power(2.0, 3.0)
-        8.0
         Raises:
-            ValueError: If the exponent is negative.
+            OperationError: If the operation fails.
         """
+        pass  # pragma: no cover
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands before execution.
+
+        Can be overridden by subclasses to enforce specific validation rules
+        for different operations.
+
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
+
+        Raises:
+            ValidationError: If operands are invalid.
+        """
+        pass
+
+    def __str__(self) -> str:
+        """
+        Return operation name for display.
+
+        Provides a string representation of the operation, typically the class name.
+
+        Returns:
+            str: Name of the operation.
+        """
+        return self.__class__.__name__
+
+    def getHistoryValue(self, a: Decimal, b: Decimal, command: str, result: str) -> str:
+        """
+        Provides a user-friendly string representation of the Calculation instance, 
+        showing the operation name, operands, and result. This enhances **Readability** 
+        and **Debugging** by giving a clear output for each calculation.
+
+        **Returns:**
+        - `str`: A string describing the calculation and its result.
+        """
+        return f"{self.__class__.__name__}: {a} {command} {b} = {result}"
+
+
+class Addition(Operation):
+    """
+    Addition operation implementation.
+
+    Performs the addition of two numbers.
+    """
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Add two numbers.
+
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
+
+        Returns:
+            Decimal: Sum of the two operands.
+        """
+        self.validate_operands(a, b)
+        return a + b
+
+
+class Subtraction(Operation):
+    """
+    Subtraction operation implementation.
+
+    Performs the subtraction of one number from another.
+    """
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Subtract one number from another.
+
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
+
+        Returns:
+            Decimal: Difference between the two operands.
+        """
+        self.validate_operands(a, b)
+        return a - b
+
+
+class Multiplication(Operation):
+    """
+    Multiplication operation implementation.
+
+    Performs the multiplication of two numbers.
+    """
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Multiply two numbers.
+
+        Args:
+            a (Decimal): First operand.
+            b (Decimal): Second operand.
+
+        Returns:
+            Decimal: Product of the two operands.
+        """
+        self.validate_operands(a, b)
+        return a * b
+
+
+class Division(Operation):
+    """
+    Division operation implementation.
+
+    Performs the division of one number by another.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands, checking for division by zero.
+
+        Overrides the base class method to ensure that the divisor is not zero.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Raises:
+            ValidationError: If the divisor is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        Divide one number by another.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Returns:
+            Decimal: Quotient of the division.
+        """
+        self.validate_operands(a, b)
+        return a / b
+
+
+class Power(Operation):
+    """
+    Power (exponentiation) operation implementation.
+
+    Raises one number to the power of another.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for power operation.
+
+        Overrides the base class method to ensure that the exponent is not negative.
+
+        Args:
+            a (Decimal): Base number.
+            b (Decimal): Exponent.
+
+        Raises:
+            ValidationError: If the exponent is negative.
+        """
+        super().validate_operands(a, b)
         if b < 0:
-            raise ValueError("Negative exponents not supported")
-        return Decimal(pow(Decimal(a), Decimal(b)))  # Returns the power of the base to exponent.
+            raise ValidationError("Negative exponents not supported")
 
-    @staticmethod
-    def root(a: Decimal, b: Decimal) -> Decimal:
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
-        Takes two parameters and return the nth root of other number
+        Calculate one number raised to the power of another.
 
-        **Parameters:**
-        - a (Decimal): Number from which the root is taken.
-        - b (Decimal): Degree of the root.
+        Args:
+            a (Decimal): Base number.
+            b (Decimal): Exponent.
 
-        **Returns:**
-        - Decimal: The base a raised to the inverse power of b.
+        Returns:
+            Decimal: Result of the exponentiation.
+        """
+        self.validate_operands(a, b)
+        return Decimal(pow(float(a), float(b)))
 
-        **Example:**
-        >>> Operation.root(4.0, 2.0)
-        2.0
-         
+
+class Root(Operation):
+    """
+    Root operation implementation.
+
+    Calculates the nth root of a number.
+    """
+
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for root operation.
+
+        Overrides the base class method to ensure that the number is non-negative
+        and the root degree is not zero.
+
+        Args:
+            a (Decimal): Number from which the root is taken.
+            b (Decimal): Degree of the root.
+
         Raises:
-            ValueError: If the number is negative or the root degree is zero.
+            ValidationError: If the number is negative or the root degree is zero.
         """
+        super().validate_operands(a, b)
         if a < 0:
-            raise ValueError("Cannot calculate root of negative number")
+            raise ValidationError("Cannot calculate root of negative number")
         if b == 0:
-            raise ValueError("Zero root is undefined")
-        return Decimal(pow(Decimal(a), 1 / Decimal(b))) # Returns the power of the base to the inverse of exponent
-    
-    @staticmethod
-    def modulus(a: Decimal, b: Decimal) -> Decimal:
+            raise ValidationError("Zero root is undefined")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
         """
-        Divides the first number by the second and returns the remainder.
+        Calculate the nth root of a number.
+
+        Args:
+            a (Decimal): Number from which the root is taken.
+            b (Decimal): Degree of the root.
+
+        Returns:
+            Decimal: Result of the root calculation.
+        """
+        self.validate_operands(a, b)
+        return Decimal(pow(float(a), 1 / float(b)))
+
+class Modulus(Operation):
+    """
+    Divides the first number by the second and returns the remainder.
+
+    """
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for modulus operation.
+
+        Overrides the base class method to ensure that the base is not zero.
+
+        Args:
+            a (Decimal): Dividend
+            b (Decimal): Divisor
+
+        Raises:
+            ValidationError: If the base number is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Zero base is undefined")  # Raises an error if division by zero is attempted.
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
 
         **Parameters:**
         - a (Decimal): The dividend.
@@ -146,22 +291,38 @@ class Operations:
         **Returns:**
         - Decimal: The remainder of a divided by b.
 
-        **Raises:**
-        - ValueError: If the divisor b is zero, as division by zero is undefined.
-
         **Example:**
         >>> Operation.modulus(10.0, 3.0)
         1.0
         """
-        if b == 0:
-            raise ValueError("Division by zero is not allowed.")  # Raises an error if division by zero is attempted.
+        self.validate_operands(a, b)
         return a % b  # Divides a by b and returns the remainder.
     
-    @staticmethod
-    def integerDivide(a: Decimal, b: Decimal) -> Decimal:
-        """
+class IntegerDivide(Operation):
+    """
         Divides the first number by the second and returns the integer quotient.
 
+    """
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands, checking for division by zero.
+
+        Overrides the base class method to ensure that the divisor is not zero.
+
+        Args:
+            a (Decimal): Dividend.
+            b (Decimal): Divisor.
+
+        Raises:
+            ValidationError: If the divisor is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Division by zero is not allowed")
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """    
+        
         **Parameters:**
         - a (Decimal): The dividend.
         - b (Decimal): The divisor.
@@ -169,21 +330,20 @@ class Operations:
         **Returns:**
         - Decimal: The integer quotient of a divided by b.
 
-        **Raises:**
-        - ValueError: If the divisor b is zero, as division by zero is undefined.
-
         **Example:**
         >>> Operation.int_divide(10.0, 3.0)
         1.0
         """
-        if b == 0:
-            raise ValueError("Division by zero is not allowed.")  # Raises an error if division by zero is attempted.
+        self.validate_operands(a, b)
         return a // b  # Divides a by b and returns the integer quotient.
     
-    @staticmethod  
-    def absoluteDifference(a:Decimal, b:Decimal) -> Decimal:
-        """
+class AbsoluteDifference(Operation):
+    """
         Subtracts the second number from the first and returns the absolute value of result.
+
+    """
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
 
         **Parameters:**
         - a (Decimal): The number from which to subtract.
@@ -196,13 +356,33 @@ class Operations:
         >>> Operation.abs_diff(10.0, 14.0)
         4.0
         """
+        self.validate_operands(a, b)
         return abs(a - b)  # Subtract two numbers and returns the absolute value of result.
     
-    @staticmethod
-    def percentage(a: Decimal, b: Decimal) -> Decimal:
-        """
+class Percentage(Operation):
+    """
         Divides the first number by the second and then multiply by 100 to get percentage value
+    """
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for percentage operation.
 
+        Overrides the base class method to ensure that the base is not zero.
+
+        Args:
+            a (Decimal): Dividend
+            b (Decimal): Divisor
+
+        Raises:
+            ValidationError: If the base number is zero.
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Zero base is undefined")  # Raises an error if division by zero is attempted.
+
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
         **Parameters:**
         - a (Decimal): The dividend.
         - b (Decimal): The divisor.
@@ -210,13 +390,72 @@ class Operations:
         **Returns:**
         - Decimal: The percent value of a divided by b and multiplied by 100.
 
-        **Raises:**
-        - ValueError: If the divisor b is zero, as division by zero is undefined.
-
         **Example:**
         >>> Operation.percent(10.0, 45.6)
         4.56
         """
-        if b == 0:
-            raise ValueError("Division by zero is not allowed.")  # Raises an error if division by zero is attempted.
-        return (a / b) * 100  # Divides a by b and then multiplies by 100 to get percentage value.
+        self.validate_operands(a, b)
+        return (float(a) / float(b)) * 100  # Divides a by b and then multiplies by 100 to get percentage value.
+
+class OperationFactory:
+    """
+    Factory class for creating operation instances.
+
+    Implements the Factory pattern by providing a method to instantiate
+    different operation classes based on a given operation type. This promotes
+    scalability and decouples the creation logic from the Calculator class.
+    """
+
+    # Dictionary mapping operation identifiers to their corresponding classes
+    _operations: Dict[str, type] = {
+        'add': Addition,
+        'subtract': Subtraction,
+        'multiply': Multiplication,
+        'divide': Division,
+        'power': Power,
+        'root': Root,
+        'modulus': Modulus,
+        'int_divide': IntegerDivide,
+        'abs_diff': AbsoluteDifference,
+        'percent': Percentage
+    }
+
+    @classmethod
+    def register_operation(cls, name: str, operation_class: type) -> None:
+        """
+        Register a new operation type.
+
+        Allows dynamic addition of new operations to the factory.
+
+        Args:
+            name (str): Operation identifier (e.g., 'modulus').
+            operation_class (type): The class implementing the new operation.
+
+        Raises:
+            TypeError: If the operation_class does not inherit from Operation.
+        """
+        if not issubclass(operation_class, Operation):
+            raise TypeError("Operation class must inherit from Operation")
+        cls._operations[name.lower()] = operation_class
+
+    @classmethod
+    def create_operation(cls, operation_type: str) -> Operation:
+        """
+        Create an operation instance based on the operation type.
+
+        This method retrieves the appropriate operation class from the
+        _operations dictionary and instantiates it.
+
+        Args:
+            operation_type (str): The type of operation to create (e.g., 'add').
+
+        Returns:
+            Operation: An instance of the specified operation class.
+
+        Raises:
+            ValueError: If the operation type is unknown.
+        """
+        operation_class = cls._operations.get(operation_type.lower())
+        if not operation_class:
+            raise ValueError(f"Unknown operation: {operation_type}")
+        return operation_class()

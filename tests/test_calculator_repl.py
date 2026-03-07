@@ -7,6 +7,7 @@ from decimal import Decimal
 from tempfile import TemporaryDirectory
 from app.calculator_repl import calculator_repl
 from app.operations import Operation, OperationFactory
+from app.exceptions import ValidationError, OperationError
 
 @patch('builtins.input', side_effect=['exit'])
 @patch('builtins.print')
@@ -88,30 +89,57 @@ def test_calculator_repl_percentage(mock_print, mock_input):
     mock_print.assert_any_call("\nResult: 30.0")
 
 
-@patch('builtins.input', side_effect=['divide', '6', '0'])
-@patch('builtins.print')
-def calculator_repl_division(mock_print, mock_input):
-    with pytest.raises(ZeroDivisionError) as exc_info:
-           calculator_repl()
-    assert str(exc_info.value) == "Cannot divide by zero. Please enter a non-zero divisor."
-
-@patch('builtins.input', side_effect=['history','exit'])
+@patch('builtins.input', side_effect=['clear','history','exit'])
 @patch('builtins.print')
 def test_calculator_repl_no_history(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("No calculations performed yet")
 
-@patch('builtins.input', side_effect=['modulus', '7', '3','history','exit'])
+    mock_print.assert_any_call("No calculations in history")
+
+@patch('builtins.input', side_effect=['clear','modulus', '7', '3','history','exit'])
 @patch('builtins.print')
 def test_calculator_repl_some_history(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("Calculation history: ")
-    mock_print.assert_any_call("1. Modulus: 7 modulus 3 = 1")
-    mock_print.assert_any_call("Goodbye!")
+    mock_print.assert_any_call("\nCalculation History:")
+    mock_print.assert_any_call("1. Modulus(7, 3) = 1")
 
 @patch('builtins.input', side_effect=['help','exit'])
 @patch('builtins.print')
 def test_calculator_repl_help_exit(mock_print, mock_input):
     calculator_repl()
-    mock_print.assert_any_call("Calculator started. Type 'help' for commands./")
-    mock_print.assert_any_call("Goodbye!")
+    mock_print.assert_any_call("Calculator started. Type 'help' for commands.")
+    mock_print.assert_any_call("\nAvailable commands:")
+    mock_print.assert_any_call("  add, subtract, multiply, divide, power, root - Perform calculations")
+    mock_print.assert_any_call("  modulus, int_divide, percent, abs_diff - Perform calculations")
+    mock_print.assert_any_call("  history - Show calculation history")
+    mock_print.assert_any_call("  clear - Clear calculation history")
+    mock_print.assert_any_call("  save - Save calculation history to file")
+    mock_print.assert_any_call("  load - Load calculation history from file")
+    mock_print.assert_any_call("  exit - Exit the calculator")
+
+# Test REPL Commands (using patches for input/output handling)
+
+@patch('builtins.input', side_effect=['exit'])
+@patch('builtins.print')
+def test_calculator_repl_save_hist_exit(mock_print, mock_input):
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        calculator_repl()
+        mock_save_history.assert_called_once()
+        mock_print.assert_any_call("History saved successfully.")
+        mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['save','exit'])
+@patch('builtins.print')
+def test_calculator_repl_save_history(mock_print, mock_input):
+    with patch('app.calculator.Calculator.save_history') as mock_save_history:
+        calculator_repl()
+        mock_print.assert_any_call("History saved successfully.")
+        mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['load','exit'])
+@patch('builtins.print')
+def test_calculator_repl_load_history(mock_print, mock_input):
+    with patch('app.calculator.Calculator.load_history') as mock_load_history:
+        calculator_repl()
+        mock_print.assert_any_call("History loaded successfully")
+        mock_print.assert_any_call("Goodbye!")

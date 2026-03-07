@@ -113,6 +113,35 @@ class CalculatorConfig:
             str(self.base_dir / "logs")
         )).resolve()
 
+    @property
+    def history_dir(self) -> Path:
+        """
+        Get history directory path.
+
+        Determines the directory path where calculation history files will be stored.
+
+        Returns:
+            Path: The history directory path.
+        """
+        return Path(os.getenv(
+            'CALCULATOR_HISTORY_DIR',
+            str(self.base_dir / "history")
+        )).resolve()
+
+    @property
+    def history_file(self) -> Path:
+        """
+        Get history file path.
+
+        Determines the file path for storing calculation history in CSV format.
+
+        Returns:
+            Path: The history file path.
+        """
+        return Path(os.getenv(
+            'CALCULATOR_HISTORY_FILE',
+            str(self.history_dir / "calculator_history.csv")
+        )).resolve()
 
     @property
     def log_file(self) -> Path:

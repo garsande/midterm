@@ -62,18 +62,6 @@ class Operation(ABC):
         """
         return self.__class__.__name__
 
-    def getHistoryValue(self, a: Decimal, b: Decimal, command: str, result: str) -> str:
-        """
-        Provides a user-friendly string representation of the Calculation instance, 
-        showing the operation name, operands, and result. This enhances **Readability** 
-        and **Debugging** by giving a clear output for each calculation.
-
-        **Returns:**
-        - `str`: A string describing the calculation and its result.
-        """
-        return f"{self.__class__.__name__}: {a} {command} {b} = {result}"
-
-
 class Addition(Operation):
     """
     Addition operation implementation.

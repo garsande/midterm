@@ -143,3 +143,33 @@ def test_calculator_repl_load_history(mock_print, mock_input):
         calculator_repl()
         mock_print.assert_any_call("History loaded successfully")
         mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['undo','exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo(mock_print, mock_input):
+    with patch('app.calculator.Calculator.undo') as mock_undo:
+        calculator_repl()
+        mock_print.assert_any_call("Operation undo done")
+        mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['redo','exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo(mock_print, mock_input):
+    with patch('app.calculator.Calculator.redo') as mock_redo:
+        calculator_repl()
+        mock_print.assert_any_call("Operation redo done")
+        mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['undo','exit'])
+@patch('builtins.print')
+def test_calculator_repl_undo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to undo")
+    mock_print.assert_any_call("Goodbye!")
+
+@patch('builtins.input', side_effect=['redo','exit'])
+@patch('builtins.print')
+def test_calculator_repl_redo(mock_print, mock_input):
+    calculator_repl()
+    mock_print.assert_any_call("Nothing to redo")
+    mock_print.assert_any_call("Goodbye!")

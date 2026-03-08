@@ -59,12 +59,12 @@ class CalculatorConfig:
         Initialize configuration with environment variables and defaults.
 
         Args:
-            base_dir (Optional[Path], optional): Base directory for the calculator. Defaults to None.
-            max_history_size (Optional[int], optional): Maximum number of history entries. Defaults to None.
-            auto_save (Optional[bool], optional): Whether to auto-save history. Defaults to None.
-            precision (Optional[int], optional): Number of decimal places for calculations. Defaults to None.
-            max_input_value (Optional[Number], optional): Maximum allowed input value. Defaults to None.
-            default_encoding (Optional[str], optional): Default encoding for file operations. Defaults to None.
+            base_dir : Base directory for the calculator. Defaults to None.
+            max_history_size : Maximum number of history entries. Defaults to None.
+            auto_save : Whether to auto-save history. Defaults to None.
+            precision: Number of decimal places for calculations. Defaults to None.
+            max_input_value : Maximum allowed input value. Defaults to None.
+            default_encoding: Default encoding for file operations. Defaults to None.
         """
         # Set base directory to project root by default
         project_root = get_project_root()

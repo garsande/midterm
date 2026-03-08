@@ -1,8 +1,8 @@
 ########################
-# Calculator REPL       #
+# Calculator REPL #
 ########################
-
 from decimal import Decimal
+import logging
 
 from app.calculator import Calculator
 from app.exceptions import OperationError, ValidationError
@@ -18,19 +18,16 @@ def calculator_repl():
     for commands, processes arithmetic operations, and manages calculation history.
     """
     try:
-        # Initialize the Calculator instance
         calc = Calculator()
 
         # Register observers for logging and auto-saving history
         calc.add_observer(LoggingObserver())
         calc.add_observer(AutoSaveObserver(calc))
-
         print("Calculator started. Type 'help' for commands.")
-
         while True:
             try:
-                # Prompt the user for a command
-                command = input("\nEnter command: ").lower().strip()
+               
+                command = input("\nEnter command: ").lower().strip()  # Prompt the user for a command
 
                 if command == 'help':
                     # Display available commands
@@ -39,6 +36,8 @@ def calculator_repl():
                     print("  modulus, int_divide, percent, abs_diff - Perform calculations")
                     print("  history - Show calculation history")
                     print("  clear - Clear calculation history")
+                    print("  undo - Undo the last calculation")
+                    print("  redo - Redo the last undone calculation")
                     print("  save - Save calculation history to file")
                     print("  load - Load calculation history from file")
                     print("  exit - Exit the calculator")
@@ -87,6 +86,22 @@ def calculator_repl():
                         print("History loaded successfully")
                     except Exception as e:
                         print(f"Error loading history: {e}")
+                    continue
+                    
+                if command == 'undo':
+                    # Undo the last calculation
+                    if calc.undo():
+                        print("Operation undo done")
+                    else:
+                        print("Nothing to undo")
+                    continue
+
+                if command == 'redo':
+                    # Redo the last undone calculation
+                    if calc.redo():
+                        print("Operation redo done")
+                    else:
+                        print("Nothing to redo")
                     continue
 
                 if command in ['add', 'subtract', 'multiply', 'divide', 'power', 'root',
@@ -142,4 +157,5 @@ def calculator_repl():
     except Exception as e:
         # Handle fatal errors during initialization
         print(f"Fatal error: {e}")
+        logging.error(f"Fatal error in calculator REPL: {e}")
         raise

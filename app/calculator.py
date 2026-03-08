@@ -11,6 +11,7 @@ import pandas as pd
 
 from app.calculation import Calculation
 from app.calculator_config import CalculatorConfig
+from app.calculator_memento import CalculatorMemento
 from app.exceptions import OperationError, ValidationError
 from app.history import HistoryObserver
 from app.input_validators import InputValidator
@@ -60,6 +61,10 @@ class Calculator:
 
         # Initialize observer list for the Observer pattern
         self.observers: List[HistoryObserver] = []
+
+        # Initialize stacks for undo and redo functionality using the Memento pattern
+        self.undo_stack: List[CalculatorMemento] = []
+        self.redo_stack: List[CalculatorMemento] = []
 
         # Create required directories for history management
         self._setup_directories()
@@ -197,6 +202,12 @@ class Calculator:
                 operand1=validated_a,
                 operand2=validated_b
             )
+
+            # Save the current state to the undo stack before making changes
+            self.undo_stack.append(CalculatorMemento(self.history.copy()))
+
+            # Clear the redo stack since new operation invalidates the redo history
+            self.redo_stack.clear()
 
             # Append the new calculation to the history
             self.history.append(calculation)
@@ -337,7 +348,48 @@ class Calculator:
         """
         Clear calculation history.
 
-        Empties the calculation history 
+        Empties the calculation history and clears the undo and redo stacks.
         """
         self.history.clear()
+        self.undo_stack.clear()
+        self.redo_stack.clear()
         logging.info("History cleared")
+
+    def undo(self) -> bool:
+        """
+        Undo the last operation.
+
+        Restores the calculator's history to the state before the last calculation
+        was performed.
+
+        Returns:
+            bool: True if an operation was undone, False if there was nothing to undo.
+        """
+        if not self.undo_stack:
+            return False
+        # Pop the last state from the undo stack
+        memento = self.undo_stack.pop()
+        # Push the current state onto the redo stack
+        self.redo_stack.append(CalculatorMemento(self.history.copy()))
+        # Restore the history from the memento
+        self.history = memento.history.copy()
+        return True
+
+    def redo(self) -> bool:
+        """
+        Redo the previously undone operation.
+
+        Restores the calculator's history to the state before the last undo.
+
+        Returns:
+            bool: True if an operation was redone, False if there was nothing to redo.
+        """
+        if not self.redo_stack:
+            return False
+        # Pop the last state from the redo stack
+        memento = self.redo_stack.pop()
+        # Push the current state onto the undo stack
+        self.undo_stack.append(CalculatorMemento(self.history.copy()))
+        # Restore the history from the memento
+        self.history = memento.history.copy()
+        return True

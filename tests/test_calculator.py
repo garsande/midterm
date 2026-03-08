@@ -38,6 +38,8 @@ def calculator():
 
 def test_calculator_initialization(calculator):
     assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
     assert calculator.operation_strategy is None
 
 # Test Logging Setup
@@ -154,6 +156,8 @@ def test_clear_history(calculator):
     calculator.perform_operation(2, 3)
     calculator.clear_history()
     assert calculator.history == []
+    assert calculator.undo_stack == []
+    assert calculator.redo_stack == []
 
 @patch('app.calculator.pd.read_csv')
 @patch('app.calculator.Path.exists', return_value=True)
@@ -179,3 +183,28 @@ def test_load_history_raises_Exception(mock_exists, mock_read_csv, calculator):
         assert calculator.history[0].result == Decimal("5")
     except Exception as e:
         pytest.fail(f"Failed to load history: {e}")
+
+# Test Undo/Redo Functionality
+
+def test_undo(calculator):
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(2, 3)
+    calculator.undo()
+    assert calculator.history == []
+
+def test_redo(calculator):
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(2, 3)
+    calculator.undo()
+    calculator.redo()
+    assert len(calculator.history) == 1
+
+
+def test_get_history_dataframe(calculator):
+    operation = OperationFactory.create_operation('add')
+    calculator.set_operation(operation)
+    calculator.perform_operation(2, 3)
+    pd.DataFrame = calculator.get_history_dataframe()
+    assert len(calculator.history) == 1

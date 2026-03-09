@@ -15,6 +15,7 @@ from app.operations import (
     AbsoluteDifference,
     IntegerDivide,
     Percentage,
+    Logarithm,
     OperationFactory,
 )
 
@@ -259,6 +260,49 @@ class TestPercentage(BaseOperationTest):
             "error": ValidationError,
             "message": "Zero base is undefined"
         },
+    }
+
+class TestLogarithm(BaseOperationTest):
+    """Test Percentage operation."""
+
+    operation_class = Logarithm
+    valid_test_cases = {
+        "positive_numbers_1": {"a": "8", "b": "2", "expected": "3.0"},
+        "positive_numbers_2": {"a": "100", "b": "10", "expected": "2.0"},
+        "positive_numbers_3": {"a": "27", "b": "3", "expected": "3.0"},
+    }
+    invalid_test_cases = {
+        "base_is_zero": {
+            "a": "5",
+            "b": "0",
+            "error": ValidationError,
+            "message": "Zero base is undefined"
+        },
+        "base_is_one": {
+            "a": "5",
+            "b": "1",
+            "error": ValidationError,
+            "message": "Base value one is undefined"
+        },
+        "base_is_negative": {
+            "a": "5",
+            "b": "-2",
+            "error": ValidationError,
+            "message": "Negative base is undefined"
+        },
+        "exponent_is_zero": {
+            "a": "0",
+            "b": "2",
+            "error": ValidationError,
+            "message": "Zero exponent is undefined"
+        },
+        "esponent_is_negative": {
+            "a": "-5",
+            "b": "2",
+            "error": ValidationError,
+            "message": "Negative exponent is undefined"
+        },
+        
     }
 
 class TestOperationFactory:

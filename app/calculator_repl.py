@@ -33,7 +33,7 @@ def calculator_repl():
                     # Display available commands
                     print(Back.MAGENTA + "\nAvailable commands:")
                     print(Back.MAGENTA + "  add, subtract, multiply, divide, power, root - Perform calculations")
-                    print(Back.MAGENTA + "  modulus, int_divide, percent, abs_diff - Perform calculations")
+                    print(Back.MAGENTA + "  modulus, int_divide, percent, abs_diff, log - Perform calculations")
                     print(Back.MAGENTA + "  history - Show calculation history")
                     print(Back.MAGENTA + "  clear - Clear calculation history")
                     print(Back.MAGENTA + "  undo - Undo the last calculation")
@@ -105,7 +105,7 @@ def calculator_repl():
                     continue
 
                 if command in ['add', 'subtract', 'multiply', 'divide', 'power', 'root',
-                               'modulus', 'int_divide', 'percent', 'abs_diff']:
+                               'modulus', 'int_divide', 'percent', 'abs_diff', 'log']:
                     # Perform the specified arithmetic operation
                     try:
                         print(Style.BRIGHT + "\nEnter numbers (or 'cancel' to abort):")

@@ -111,7 +111,7 @@ def test_calculator_repl_help_exit(mock_print, mock_input):
     mock_print.assert_any_call(Back.BLUE + "Calculator started. Type 'help' for commands." + Style.RESET_ALL)
     mock_print.assert_any_call(Back.MAGENTA +"\nAvailable commands:")
     mock_print.assert_any_call(Back.MAGENTA +"  add, subtract, multiply, divide, power, root - Perform calculations")
-    mock_print.assert_any_call(Back.MAGENTA +"  modulus, int_divide, percent, abs_diff - Perform calculations")
+    mock_print.assert_any_call(Back.MAGENTA +"  modulus, int_divide, percent, abs_diff, log - Perform calculations")
     mock_print.assert_any_call(Back.MAGENTA +"  history - Show calculation history")
     mock_print.assert_any_call(Back.MAGENTA +"  clear - Clear calculation history")
     mock_print.assert_any_call(Back.MAGENTA +"  undo - Undo the last calculation")

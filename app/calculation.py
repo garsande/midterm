@@ -7,7 +7,7 @@ import datetime
 from decimal import Decimal, InvalidOperation
 import logging
 from typing import Any, Dict
-
+import math
 from app.exceptions import OperationError
 
 
@@ -69,7 +69,8 @@ class Calculation:
             "Modulus":lambda x,y: x % y if y != 0 else self._raise_div_zero(),
             "IntegerDivide":lambda x, y: x // y if y != 0 else self._raise_div_zero(),
             "AbsoluteDifference":lambda x,y: abs(x - y),
-            "Percentage":lambda x,y : Decimal((float(x) / float(y)) * 100) if y >= 0 else self._raise_div_zero()
+            "Percentage":lambda x,y : Decimal((float(x) / float(y)) * 100) if y >= 0 else self._raise_div_zero(),
+            "Logarithm": lambda x,y : Decimal(math.log(x, y))
         }
 
         # Retrieve the operation function based on the operation name

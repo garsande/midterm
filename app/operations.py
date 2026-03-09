@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 from decimal import Decimal
 from typing import Dict
 from app.exceptions import ValidationError
-
+import math
 
 class Operation(ABC):
     """
@@ -385,6 +385,53 @@ class Percentage(Operation):
         self.validate_operands(a, b)
         return (float(a) / float(b)) * 100  # Divides a by b and then multiplies by 100 to get percentage value.
 
+class Logarithm(Operation):
+    """
+        Finds the log of the first number with the second as the base
+    """
+    def validate_operands(self, a: Decimal, b: Decimal) -> None:
+        """
+        Validate operands for log operation.
+
+        Overrides the base class method to ensure that the base is not zero.
+
+        Args:
+            a (Decimal): Exponent
+            b (Decimal): Base
+
+        Raises:
+            ValidationError: If the base number is zero or one or less than zero. 
+            ValidationError: If the expoent number is zero or less than zero. 
+        """
+        super().validate_operands(a, b)
+        if b == 0:
+            raise ValidationError("Zero base is undefined")  # Raises an error if division by zero is attempted.
+        if b < 0:
+            raise ValidationError("Negative base is undefined")  # Raises an error if division by zero is attempted.
+        if b == 1:
+            raise ValidationError("Base value one is undefined")  # Raises an error if division by zero is attempted.
+        if a == 0:
+            raise ValidationError("Zero exponent is undefined")  # Raises an error if division by zero is attempted.
+        if a < 0:
+            raise ValidationError("Negative exponent is undefined")  # Raises an error if division by zero is attempted.
+
+
+    def execute(self, a: Decimal, b: Decimal) -> Decimal:
+        """
+        **Parameters:**
+        - a (Decimal): The exponent.
+        - b (Decimal): The base.
+        
+        **Returns:**
+        - Decimal: The log value of a to the base b.
+
+        **Example:**
+        >>> Operation.log(8.0, 2.0)
+        3.0
+        """
+        self.validate_operands(a, b)
+        return math.log(a, b)
+
 class OperationFactory:
     """
     Factory class for creating operation instances.
@@ -405,7 +452,8 @@ class OperationFactory:
         'modulus': Modulus,
         'int_divide': IntegerDivide,
         'abs_diff': AbsoluteDifference,
-        'percent': Percentage
+        'percent': Percentage,
+        'log': Logarithm
     }
 
     @classmethod
